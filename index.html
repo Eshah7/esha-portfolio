@@ -149,6 +149,14 @@
   .btn:hover{background:var(--accent-600)}
   :root[data-theme="light"] .btn{ color:#ffffff; }
 
+  @media (max-width: 768px) {
+  .cta-row {
+    justify-content: center; /* centers button horizontally */
+    flex-direction: column;  /* stacks elements vertically */
+    align-items: center;     /* centers vertically stacked items */
+            }
+    }
+
   /* ===== About collage ===== */
   .about-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; align-items:start; }
   .collage{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; position:relative; }
@@ -200,6 +208,23 @@
   .entry-link:hover .learn-more{ opacity:1; transform:translateX(2px); }
   .entry .learn-more i{ margin-left:6px; }
 
+  /* Mobile: stack "Learn more" under the chips */
+  @media (max-width: 720px){
+  .learn-more{
+    position: static;          /* no absolute on mobile */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;          /* space from chips */
+    opacity: 1;                /* ensure readable */
+    }
+
+  /* If the container was using absolute positioning room, allow wrap */
+  .tags, .chips, .links{
+    flex-wrap: wrap;
+  }
+}
+
   /* Reveal */
   @media (prefers-reduced-motion: no-preference){
     .section-card{ opacity:0; transform:translate3d(0,16px,0) scale(.98); transition:opacity .55s ease, transform .55s cubic-bezier(.18,.7,.2,1) }
@@ -212,10 +237,50 @@
     .title{font-size:40px}
     .about-grid{ grid-template-columns:1fr; }
   }
+  /* Mobile: turn the side rail into a bottom dock */
   @media (max-width: 900px){
-    .sidenav{display:none}
-    .page{padding-inline-start:0}
+    /* show the nav as a bottom bar */
+    .sidenav{
+      position: fixed;
+      inset-inline: 0;          /* left & right = 0 */
+      inset-block: auto 10px;   /* bottom = 10px, keep a little air */
+      z-index: 1000;
+      width: 100%;
+      padding-inline: 12px;
+      pointer-events: none;     /* keep — rail will enable events */
+    }
+
+    /* make the rail horizontal */
+    .rail{
+      pointer-events: auto;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 8px;
+      width: auto;
+      margin: 0 auto;
+      max-width: min(640px, 100% - 24px);
+      border-radius: 16px;
+    }
+
+    /* compact pills & switch for thumb reach */
+    .pill, .switch{
+      width: 44px;
+      height: 44px;
+    }
+
+    /* hide hover labels on mobile (icons only) */
+    .pill .label, .switch .label{
+      display: none;
+    }
+
+    /* remove left gutter since we no longer have a side nav */
+    .page{
+      padding-inline-start: 0;
+      /* give content some bottom room so dock doesn't overlap */
+      padding-bottom: 88px;
+    }
   }
+
 </style>
 </head>
 <link rel="icon" type="image/png" href="assets/Esha Professional Picture.jpeg">
