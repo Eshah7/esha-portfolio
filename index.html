@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Esha Shah — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root{
+    /* ===== Darker, richer GREEN palette ===== */
+    --green-50:#eefaf3;
+    --green-100:#d8f2e3;
+    --green-300:#7fd3aa;
+    --green-500:#2a9d63;
+    --green-600:#228652;
+    --green-700:#1b6c43;
+
+    /* Dark (default) surface + text */
+    --bg:#0b0f12; --panel:#11161a; --text:#e7eee9; --muted:#b8c5be;
+    --outline:rgba(255,255,255,.09);
+
+    /* Map accents */
+    --accent:var(--green-500);
+    --accent-600:var(--green-600);
+    --accent-200:var(--green-300);
+
+    /* Role title color (dark mode default) */
+    --role-color:#9ca3af;
+
+    --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    --content-max:1100px; --sidenav-w:78px; --side-gutter:24px;
+    --divider:1px solid var(--outline);
+  }
+
+  /* ===== Light mode ===== */
+  :root[data-theme="light"]{
+    --bg:#f6faf7; --panel:#ffffff; --text:#0f1a13; --muted:#4b5d51;
+    --outline:rgba(0,0,0,.08);
+    --green-500:#2a9d63; --green-600:#228652; --green-300:#7fd3aa;
+    --accent:var(--green-500); --accent-600:var(--green-600); --accent-200:var(--green-300);
+    --role-color:#4b5563;
+    --shadow:0 8px 28px rgba(2,6,23,.08);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; scroll-snap-type:y proximity;}
+  body{
+    margin:0; font-family:Inter,system-ui,sans-serif;
+    background:linear-gradient(180deg, var(--bg), color-mix(in oklab, var(--bg), black 8%) 60%);
+    color:var(--text);
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{color:var(--accent-600)}
+
+  /* ===== Side Nav ===== */
+  .sidenav{
+    position:fixed; inset-block:0; inset-inline-start:0; z-index:60;
+    display:flex; align-items:center; padding-inline:12px; width:var(--sidenav-w);
+    pointer-events:none;
+  }
+  .rail{
+    pointer-events:auto; display:flex; flex-direction:column; gap:10px; align-items:center;
+    background:color-mix(in oklab, var(--panel), transparent 40%);
+    border:1px solid var(--outline); backdrop-filter:saturate(140%) blur(8px);
+    border-radius:999px; padding:12px; box-shadow:var(--shadow); width:100%; overflow:visible;
+  }
+  .pill{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    width:46px; height:46px; border-radius:999px; color:color-mix(in oklab, var(--text), white 20%);
+    border:1px solid transparent; transition:background .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  .pill i{font-size:18px; line-height:1}
+  .pill:hover{
+    background:color-mix(in oklab, var(--accent), transparent 82%);
+    border-color:color-mix(in oklab, var(--accent), transparent 62%);
+    transform:translateY(-1px)
+  }
+  .pill.active{
+    background:color-mix(in oklab, var(--accent), transparent 76%);
+    border-color:color-mix(in oklab, var(--accent), transparent 50%);
+    color:color-mix(in oklab, var(--text), white 6%);
+  }
+  .pill .label{
+    position:absolute; left:54px; z-index:2; padding:8px 12px; border-radius:999px; font-size:14px; line-height:1;
+    background:var(--panel); border:1px solid var(--outline); color:var(--text);
+    white-space:nowrap; pointer-events:none; opacity:0; transform:translateX(-6px);
+    filter:drop-shadow(0 6px 16px rgba(0,0,0,.18));
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .pill:hover .label{ opacity:1; transform:translateX(0) }
+
+  .switch{
+    margin-top:6px; width:46px; height:46px; border-radius:999px; border:1px solid var(--outline);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    background:var(--panel); color:var(--text);
+    position:relative; transition:transform .18s ease, border-color .18s ease;
+  }
+  .switch:hover{ transform:translateY(-1px); border-color:color-mix(in oklab, var(--accent), transparent 55%) }
+  .switch .label{
+    position:absolute; left:54px; padding:8px 12px; border-radius:999px; font-size:13px; line-height:1;
+    background:var(--panel); border:1px solid var(--outline); color:var(--text);
+    white-space:nowrap; opacity:0; transform:translateX(-6px); transition:opacity .18s, transform .18s;
+    pointer-events:none;
+  }
+  .switch:hover .label{ opacity:1; transform:translateX(0) }
+  .switch .fa-moon{ color:#facc15; }
+  .switch .fa-sun{  color:#fde047; }
+
+  /* ===== Layout ===== */
+  .page{ padding-inline-start:calc(var(--sidenav-w) + var(--side-gutter)); }
+  section{
+    padding:64px clamp(20px,4vw,28px);
+    min-height:100vh; scroll-snap-align:start;
+    display:flex; align-items:flex-start;
+  }
+  #about{ padding-top:40px; }
+  section + section{ border-top:var(--divider); }
+  .container{ max-width:var(--content-max); margin:0 auto; width:100% }
+  h1,h2{margin:0 0 14px}
+  h2{font-size:28px}
+  p{color:var(--muted); line-height:1.7}
+
+  /* ===== Hero ===== */
+  .hero{ padding-top:40px; display:flex; align-items:center; }
+  .hero-card{
+    width:min(1100px, 92vw);
+    background:var(--panel); border:1px solid var(--outline);
+    border-radius:calc(var(--radius) + 12px); box-shadow:var(--shadow);
+    padding:40px; display:grid; grid-template-columns:1fr 1.1fr; gap:36px; align-items:center; margin-inline:auto;
+  }
+  .photo{
+    width:min(260px, 70%); aspect-ratio:4/5; object-fit:cover;
+    border-radius:calc(var(--radius) + 8px); display:block; margin-inline:auto;
+  }
+  .kicker{color:var(--accent); font-weight:700; letter-spacing:.15em}
+  .title{font-size:48px; line-height:1.1; margin:.25rem 0 1rem}
+  .title .accent{color:var(--accent)}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:22px}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    padding:14px 18px; border-radius:999px; background:var(--accent);
+    color:#06110a; font-weight:700; border:none; cursor:pointer; text-align:center;
+    box-shadow:0 6px 18px color-mix(in oklab, var(--accent), transparent 75%);
+  }
+  .btn:hover{background:var(--accent-600)}
+  :root[data-theme="light"] .btn{ color:#ffffff; }
+
+  /* ===== About collage ===== */
+  .about-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; align-items:start; }
+  .collage{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; position:relative; }
+  .cimg{
+    width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:14px; border:1px solid var(--outline);
+    box-shadow:var(--shadow); transition:transform .25s ease, box-shadow .25s ease; background:var(--panel);
+  }
+  .cimg:nth-child(1):hover{ transform:rotate(-1.2deg) scale(1.02); }
+  .cimg:nth-child(2):hover{ transform:rotate(1.1deg) translateY(4px) scale(1.02); }
+  .cimg:nth-child(3):hover{ transform:rotate(.6deg) translateX(4px) scale(1.02); }
+  .cimg:nth-child(4):hover{ transform:rotate(-.6deg) translateY(-4px) scale(1.02); }
+  .about-copy p{ margin:0; color:var(--muted); line-height:1.8; }
+
+  /* ===== Lists ===== */
+  .list{display:grid; gap:14px; margin-top:18px}
+
+  /* Make ONLY experience cards clickable */
+  .entry-link{ display:block; text-decoration:none; color:inherit; border-radius:var(--radius); }
+  .entry{
+    position:relative;
+    background:var(--panel); border:1px solid var(--outline); border-radius:var(--radius); padding:18px;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .entry-link:hover .entry,
+  .entry-link:focus .entry{
+    transform:translateY(-2px);
+    border-color:color-mix(in oklab, var(--accent), transparent 60%);
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+
+  .entry-head{display:flex; justify-content:space-between; gap:10px; align-items:baseline}
+  .company-name{ font-size:20px; font-weight:800; margin:0 0 .15rem; }
+  .job-title{ font-size:18px; font-weight:700; color:var(--role-color); margin:.15rem 0 .9rem; }
+  .date{color:var(--accent); font-size:13px; font-weight:800; white-space:nowrap}
+  .job-description, .entry p{ color:#cfd6d2; font-size:1rem; line-height:1.6; }
+  :root[data-theme="light"] .job-description,
+  :root[data-theme="light"] .entry p{ color:#4b5563; }
+
+  .links{display:flex; gap:12px; margin:8px 0 2px}
+  .link-chip{ font-size:13px; padding:8px 12px; border-radius:999px; background:var(--accent); color:#ffffff; border:1px solid color-mix(in oklab, var(--accent), black 12%); }
+  .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+  .tag{ font-size:12px; padding:6px 10px; border-radius:999px; background:transparent; border:1px solid var(--accent); color:var(--accent); }
+
+  .learn-more{
+    position:absolute; right:16px; bottom:14px; font-size:13px; font-weight:700;
+    color:color-mix(in oklab, var(--accent), var(--text) 30%);
+    opacity:.7; transition:opacity .18s ease, transform .18s ease;
+  }
+  .entry-link:hover .learn-more{ opacity:1; transform:translateX(2px); }
+  .entry .learn-more i{ margin-left:6px; }
+
+  /* Reveal */
+  @media (prefers-reduced-motion: no-preference){
+    .section-card{ opacity:0; transform:translate3d(0,16px,0) scale(.98); transition:opacity .55s ease, transform .55s cubic-bezier(.18,.7,.2,1) }
+    .section-card.in{ opacity:1; transform:none }
+  }
+
+  /* Responsive */
+  @media (max-width: 980px){
+    .hero-card{grid-template-columns:1fr; text-align:center}
+    .title{font-size:40px}
+    .about-grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 900px){
+    .sidenav{display:none}
+    .page{padding-inline-start:0}
+  }
+</style>
+</head>
+<body>
+  <!-- SIDE NAV -->
+  <aside class="sidenav" aria-label="Section navigation">
+    <nav class="rail">
+      <a class="pill" href="#home"><i class="fa-solid fa-house" aria-hidden="true"></i><span class="label">Home</span></a>
+      <a class="pill" href="#about"><i class="fa-regular fa-id-card" aria-hidden="true"></i><span class="label">About Me</span></a>
+      <a class="pill" href="#experience"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><span class="label">Experience</span></a>
+      <a class="pill" href="#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i><span class="label">Projects</span></a>
+      <a class="pill" href="https://www.linkedin.com/in/eshah17/" target="_blank" rel="noopener">
+        <i class="fa-brands fa-linkedin" aria-hidden="true"></i><span class="label">Let's Connect!</span>
+      </a>
+      <button class="switch" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+        <i class="fa-solid fa-moon" id="themeIcon" aria-hidden="true"></i>
+        <span class="label" id="themeLabel">Dark mode</span>
+      </button>
+    </nav>
+  </aside>
+
+  <main class="page">
+    <!-- HOME -->
+    <section id="home" class="hero">
+      <div class="hero-card section-card">
+        <div><img class="photo" src="assets/Esha Professional Picture.jpeg" alt="Portrait of Esha" /></div>
+        <div>
+          <div class="kicker">Hey! I'm</div>
+          <h1 class="title"><span class="accent">Esha Shah</span><br/> Data Enthusiast</h1>
+          <p>I build clean and user-friendly data products. I like diving into messy data to solve complex problems!</p>
+          <div class="cta-row">
+            <a class="btn" href="assets/Esha_Shah.Resume.pdf" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> View My Resume</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container section-card">
+        <h2>About Me</h2>
+        <div class="about-grid">
+          <div class="collage">
+            <img class="cimg" src="assets/images/about-me-1.JPG" alt="Esha at Arsenal Game" />
+            <img class="cimg" src="assets/images/about-me-2.png" alt="Esha in Iceland" />
+            <img class="cimg" src="assets/images/about-me-3.png" alt="Esha at Graduation Party" />
+            <img class="cimg" src="assets/images/about-me-5.png" alt="Esha at Capital One Event" />
+          </div>
+          <div class="about-copy">
+            <br />
+            <p>
+              I am a recent Management Engineering graduate from the University of Waterloo,
+              with a strong passion to leverage Data Science to optimize workflows and enhance customer experiences.
+            </p>
+            <br />
+            <p>
+              I have applied my skills in Python, SQL, and data visualization tools like AWS Quicksight to create impactful solutions
+              at <strong>Capital One</strong>, <strong>Loblaw Digital</strong>, and <strong>KPMG</strong>. I have worked on various projects with partners such as <strong>Uber</strong>
+              to develop advertising recommendation models.
+            </p>
+            <br />
+            <p>
+              In my free time, you can find me writing my next blog post for
+              <a href="https://eshashah.substack.com/" target="_blank"><u>The Brain Dump (TBD)</u></a>,
+              where I share my cool travel itineraries through cinematic videos,
+              <strong>sports data science projects</strong>, and my favourite running trails!
+            </p>
+            <br />
+            <p>
+              I am always eager to learn and take on new challenges! So let's connect and explore how we can work together to create impactful data solutions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE (ONLY these are clickable) -->
+    <section id="experience">
+      <div class="container section-card">
+        <h2>Experience</h2>
+        <div class="list">
+
+          <a class="entry-link">
+            <article class="entry">
+              <div class="entry-head">
+                <h3 class="company-name">Capital One</h3>
+                <div class="date">Sept 2024 – Dec 2024</div>
+              </div>
+              <h4 class="job-title">Process Manager Intern</h4>
+              <p class="job-description">
+                Built Quicksight dashboards to monitor card fulfillment and operational health; automated reporting and shipped internal tooling.
+              </p>
+              <div class="tags"><span class="tag">AWS Quicksight</span><span class="tag">Snowflake</span><span class="tag">Python</span></div>
+             <!--  <span class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></span> -->
+            </article>
+          </a>
+
+          <a class="entry-link">
+            <article class="entry">
+              <div class="entry-head">
+                <h3 class="company-name">Loblaw Digital</h3>
+                <div class="date">Jan 2023 – Apr 2024</div>
+              </div>
+              <h4 class="job-title">Data Analyst Intern</h4>
+              <p class="job-description">
+                Conducted statistical analysis on customer behaviour to create new offers and increase weekly active users on the PC Optimum app.
+              </p>
+              <div class="tags"><span class="tag">BigQuery</span><span class="tag">Data Storytelling</span><span class="tag">Pitching</span></div>
+              <!--  <span class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></span> -->
+            </article>
+          </a>
+
+          <a class="entry-link">
+            <article class="entry">
+              <div class="entry-head">
+                <h3 class="company-name">Capital One</h3>
+                <div class="date">May 2023 – Aug 2023</div>
+              </div>
+              <h4 class="job-title">Process Manager Intern</h4>
+              <p class="job-description">
+                Analyzed data and logic pipelines to identify bottlenecks, then presented a process binder (SIPOCs, Swimlanes, FMEA, Control Plan) recommending a shift from monthly to daily credit limit decisions.
+              </p>
+              <div class="tags"><span class="tag">Snowflake</span><span class="tag">Confluence</span><span class="tag">Miro</span></div>
+              <!--  <span class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></span> -->
+            </article>
+          </a>
+
+          <a class="entry-link">
+            <article class="entry">
+              <div class="entry-head">
+                <h3 class="company-name">KPMG</h3>
+                <div class="date">Sept 2022 – Dec 2022</div>
+              </div>
+              <h4 class="job-title">Product Manager Intern</h4>
+              <p class="job-description">
+                Led the refinement of the product’s data dashboard feature to improve the process of personalizing tax calculation visualizations for clients.
+              </p>
+              <div class="tags"><span class="tag">Azure DevOps</span><span class="tag">Figma</span><span class="tag">MS SQL</span></div>
+              <!--  <span class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></span> -->
+            </article>
+          </a>
+
+          <a class="entry-link"> <!-- to add back routing do href = "amlb.html" -->
+            <article class="entry">
+              <div class="entry-head">
+                <h3 class="company-name">AMLB CPAs and Consulting</h3>
+                <div class="date">May 2021 – Apr 2022</div>
+              </div>
+              <h4 class="job-title">Business Analyst Intern</h4>
+              <p class="job-description">
+                Designed and automated a data pipeline integrating BambooHR and Karbon APIs into Excel (PowerQuery), enabling near real-time KPI tracking for quarterly performance reviews.
+              </p>
+              <div class="tags"><span class="tag">Excel VBA</span><span class="tag">APIs</span><span class="tag">Power Automate</span></div>
+              <!--  <span class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></span> -->
+            </article>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS (restored, unchanged language) -->
+    <section id="projects">
+      <div class="container section-card">
+        <h2>Projects</h2>
+        <div class="list">
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">2025 Women's Euros On-Ball Value Model</h3>
+              <div class="date">Aug 2025</div>
+            </div>
+            <h4 class="job-title">Data Science in Sports</h4>
+            <p class="job-description">
+              Developed a Logistic Regression model to quantify the value of on-ball actions that lead to goals.
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://eshashah.substack.com/p/how-much-value-do-you-add-to-your" target="_blank" rel="noopener"><i class="fa-solid fa-comment"></i> Blog Post</a>
+              <a class="link-chip" href="https://eshah7-2025-euros-simple-obv.share.connect.posit.cloud/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Interactive Dashboard</a>
+            </div>
+            <div class="tags"><span class="tag">Streamlit</span><span class="tag">Logistic Regression</span><span class="tag">Python</span></div>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">UberAds</h3>
+              <div class="date">Apr 2024 - Apr 2025</div>
+            </div>
+            <h4 class="job-title">Engineering Capstone with Uber</h4>
+            <p class="job-description">
+              Developed an end-to-end Advertising portal, unlocking live ad campaign tracking and Uber ad recommendations (XGBoost).
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://drive.google.com/file/d/1HtuZbgcFjDuKPoLhg6OZsY_yxn8f8Vx9/view?usp=sharing" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Demo Video </a>
+            </div>
+            <div class="tags"><span class="tag">XGBoost</span><span class="tag">Plotly</span><span class="tag">Pandas</span></div>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">March Madness Bracket Challenge</h3>
+              <div class="date">Jan 2025 - Apr 2025</div>
+            </div>
+            <h4 class="job-title">Advanced Machine Learning Course</h4>
+            <p class="job-description">
+              Utilized XGBoost Classifier and Random Forest models to predict the 2024 NCAA March Madness outcomes; evaluated the model using a confusion matrix and ROC curve.
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://colab.research.google.com/drive/1h2XpLPNvskNkqyX7fXDGwQ-yVkNP5qZ9?usp=sharing" target="_blank" rel="noopener"><i class="fa-solid fa-file"></i> Project File </a>
+            </div>
+            <div class="tags"><span class="tag">Data Cleaning</span><span class="tag">XGBoost Classifier</span><span class="tag">Model Evaluation</span></div>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">Predicting Credit Card Fraud</h3>
+              <div class="date">Jan 2025 - Apr 2025</div>
+            </div>
+            <h4 class="job-title">Applications of Management Engineering Course</h4>
+            <p class="job-description">
+              Utilized Logistic Regression and XGBoost Classifer to predict credit card default; developed a LP model to optimize credit limit decisions.
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://mse433project.streamlit.app/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Interactive Webpage </a>
+            </div>
+            <div class="tags"><span class="tag">Model Development</span><span class="tag">Optimization Models</span><span class="tag">Gurobi</span></div>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">MusicalOutfits - Music & Clothing Predictor</h3>
+              <div class="date">Jan 2023 - Apr 2023</div>
+            </div>
+            <h4 class="job-title">Introduction to Machine Learning</h4>
+            <p class="job-description">
+              Trained a Naive Bayes model utilizing scikit-learn, providing personalized music genre recommendations based on the user’s outfit.
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://colab.research.google.com/drive/1N-obiULIOAFgOrLlz4bHBeMfXvVy0eIU?usp=sharing" target="_blank" rel="noopener"><i class="fa-solid fa-file"></i> Project File </a>
+            </div>
+            <div class="tags"><span class="tag">Model Development</span><span class="tag">Optimization Models</span><span class="tag">Gurobi</span></div>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">HonkedIn - Student Networking Site</h3>
+              <div class="date">Jan 2023 - Apr 2023</div>
+            </div>
+            <h4 class="job-title">Principles of Software Engineering</h4>
+            <p class="job-description">
+              Developed an interactive website to connect with other students and host events using React.js, Node.js, Express.js and MySQL.
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://github.com/safchow/HonkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub Repo </a>
+              <a class="link-chip" href="https://youtu.be/L5imseO8FYc" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Demo Video </a>
+            </div>
+            <div class="tags"><span class="tag">Full Stack Development</span><span class="tag">JUnit</span><span class="tag">Postman</span></div>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">UW Orbital Design Team</h3>
+              <div class="date">Jun 2021 - Mar 2022</div>
+            </div>
+            <h4 class="job-title">Recruitment, Marketing and Integration Lead</h4>
+            <p class="job-description">
+              Managed and collaborated with a team of 7 members to effectively create marketing content and enhance the team’s website.
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://drive.google.com/file/d/1Qbwhy953fWmy43gQwqScqFea46OyD_Qi/view" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Pitch Video </a>
+            </div>
+            <div class="tags"><span class="tag">Final Cut Pro</span><span class="tag">Notion</span><span class="tag">Monday.com</span></div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <footer class="container" style="padding:40px 20px;color:var(--muted);text-align:center">
+      © <span id="year"></span> Esha Shah
+    </footer>
+  </main>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reveal animation
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+    }, {threshold:0.12});
+    document.querySelectorAll('.section-card').forEach(el=>io.observe(el));
+
+    // Active state for side pills (exclude external)
+    const ids = ['home','about','experience','projects'];
+    const pills = document.querySelectorAll('.pill[href^="#"]');
+    function setActive(){
+      const pos = scrollY + 140;
+      let cur = 'home';
+      for (const id of ids){
+        const s = document.getElementById(id); if (pos >= s.offsetTop) cur = id;
+      }
+      pills.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+    }
+    setActive(); addEventListener('scroll', setActive);
+
+    // Theme toggle (persist)
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+
+    const saved = localStorage.getItem('theme');
+    if(saved){ if(saved==='light') root.setAttribute('data-theme','light'); updateSwitch(); }
+
+    btn.addEventListener('click', () => {
+      const isLight = root.getAttribute('data-theme') === 'light';
+      if(isLight){ root.removeAttribute('data-theme'); localStorage.setItem('theme',''); }
+      else{ root.setAttribute('data-theme','light'); localStorage.setItem('theme','light'); }
+      updateSwitch();
+    });
+
+    function updateSwitch(){
+      const isLight = root.getAttribute('data-theme') === 'light';
+      btn.setAttribute('aria-pressed', String(isLight));
+      btn.setAttribute('aria-label', isLight ? 'Toggle dark mode' : 'Toggle light mode');
+      icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      label.textContent = isLight ? 'Light mode' : 'Dark mode';
+    }
+  </script>
+</body>
+</html>

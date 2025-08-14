@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loblaw Digital — Case Study | Esha Shah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  /* ===== theme tokens ===== */
+  :root{
+    --green-50:#eefaf3; --green-100:#d8f2e3; --green-300:#7fd3aa;
+    --green-500:#2a9d63; --green-600:#228652; --green-700:#1b6c43;
+
+    --bg:#0b0f12; --panel:#11161a; --text:#e7eee9; --muted:#b8c5be;
+    --outline:rgba(255,255,255,.09);
+
+    --accent:var(--green-500); --accent-600:var(--green-600); --accent-200:var(--green-300);
+    --role-color:#9ca3af;
+
+    /* NEW adaptive greys */
+    --heading-grey:white;  /* light grey (for DARK mode) */
+    --body-text:#dfe6e2;     /* slightly softer light for paragraphs/lists in DARK mode */
+
+    --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    --content-max:1100px; --sidenav-w:78px; --side-gutter:24px;
+    --divider:1px solid var(--outline);
+  }
+  :root[data-theme="light"]{
+    --bg:#f6faf7; --panel:#ffffff; --text:#0f1a13; --muted:#4b5d51;
+    --outline:rgba(0,0,0,.08);
+
+    --green-500:#2a9d63; --green-600:#228652; --green-300:#7fd3aa;
+    --accent:var(--green-500); --accent-600:var(--green-600); --accent-200:var(--green-300);
+
+    --role-color:#4b5563;
+
+    /* override adaptive greys in LIGHT mode */
+    --heading-grey:black;  /* darker grey headings */
+    --body-text:#4b5563;     /* consistent paragraph/list color */
+
+    --shadow:0 8px 28px rgba(2,6,23,.08);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; font-family:Inter,system-ui,sans-serif;
+    background:linear-gradient(180deg, var(--bg), color-mix(in oklab, var(--bg), black 8%) 60%);
+    color:var(--text);
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{color:var(--accent-600)}
+
+  /* ===== side rail ===== */
+  .sidenav{
+    position:fixed; inset-block:0; inset-inline-start:0; z-index:60;
+    display:flex; align-items:center; padding-inline:12px; width:var(--sidenav-w); pointer-events:none;
+  }
+  .rail{
+    pointer-events:auto; display:flex; flex-direction:column; gap:10px; align-items:center;
+    background:color-mix(in oklab, var(--panel), transparent 40%);
+    border:1px solid var(--outline); backdrop-filter:saturate(140%) blur(8px);
+    border-radius:999px; padding:12px; box-shadow:var(--shadow); width:100%;
+  }
+  .pill{ position:relative; display:flex; align-items:center; justify-content:center;
+    width:46px; height:46px; border-radius:999px; color:color-mix(in oklab, var(--text), white 20%);
+    border:1px solid transparent; transition:.18s;
+  }
+  .pill:hover{ background:color-mix(in oklab, var(--accent), transparent 82%); border-color:color-mix(in oklab, var(--accent), transparent 62%); transform:translateY(-1px) }
+  .pill .label{
+    position:absolute; left:54px; padding:8px 12px; border-radius:999px; font-size:14px; line-height:1;
+    background:var(--panel); border:1px solid var(--outline); color:var(--text);
+    white-space:nowrap; opacity:0; transform:translateX(-6px);
+    filter:drop-shadow(0 6px 16px rgba(0,0,0,.18)); transition:.18s;
+  }
+  .pill:hover .label{ opacity:1; transform:translateX(0) }
+  .switch{ margin-top:6px; width:46px; height:46px; border-radius:999px; border:1px solid var(--outline);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; background:var(--panel); color:var(--text); position:relative; transition:.18s;
+  }
+  .switch:hover{ transform:translateY(-1px); border-color:color-mix(in oklab, var(--accent), transparent 55%) }
+  .switch .label{ position:absolute; left:54px; padding:8px 12px; border-radius:999px; font-size:13px; background:var(--panel); border:1px solid var(--outline); color:var(--text); white-space:nowrap; opacity:0; transform:translateX(-6px); transition:.18s; }
+  .switch:hover .label{ opacity:1; transform:translateX(0) }
+  .switch .fa-moon{ color:#facc15 } .switch .fa-sun{ color:#fde047 }
+
+  /* ===== layout ===== */
+  .page{ padding-inline-start:calc(var(--sidenav-w) + var(--side-gutter)); }
+  .wrap{ max-width:var(--content-max); margin-inline:auto; padding:48px 24px 96px; }
+
+  /* hero */
+  .hero{ display:flex; flex-direction:column; gap:18px; margin-top:12px; }
+  .crumbs{ font-size:14px; color:var(--muted) }
+  .crumbs a{ color:var(--muted) }
+  .title{ font-size:42px; line-height:1.1; margin:0 }
+  .subtitle{ color:var(--role-color); font-weight:600; margin-top:2px }
+
+  .meta{
+    margin-top:12px;
+    display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:14px;
+  }
+  .meta .box{ background:var(--panel); border:1px solid var(--outline); border-radius:12px; padding:14px 16px; }
+  .meta .label{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--role-color); font-weight:800; }
+  .meta .value{ margin-top:6px; font-weight:700 }
+
+  /* body grid with slim TOC */
+  .body-grid{ display:grid; grid-template-columns: minmax(0,1fr) 200px; gap:24px; margin-top:28px; }
+  .toc{ position:sticky; top:24px; align-self:start; background:var(--panel); border:1px solid var(--outline); border-radius:12px; padding:12px 12px; }
+  .toc h5{ margin:0 0 8px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--role-color) }
+  .toc a{ display:block; padding:6px 8px; border-radius:8px; color:var(--text); font-size:13px }
+  .toc a:hover{ background:color-mix(in oklab, var(--accent), transparent 88%) }
+
+  /* sections */
+  .section{ background:var(--panel); border:1px solid var(--outline); border-radius:16px; padding:22px; margin-bottom:18px; }
+  .section h3{ margin:0 0 10px; font-size:22px; color:var(--heading-grey); }
+
+  /* CONSISTENT BODY TEXT under headings across the page */
+  .section p,
+  .section ul,
+  .section li,
+  .proj p,
+  .proj ul,
+  .proj li {
+    color: var(--body-text);
+    line-height: 1.75;
+  }
+
+  .muted{ color:var(--muted) }
+  .list{ margin:8px 0 0; padding-left:18px }
+  .list li{ margin:6px 0 }
+
+  /* results emphasis */
+  .results{ border:1px solid color-mix(in oklab, var(--accent), transparent 60%); background:color-mix(in oklab, var(--accent), transparent 88%); }
+
+  /* tabs (squarer, a bit larger) */
+  .tabs{ background:var(--panel); border:1px solid var(--outline); border-radius:16px; }
+  .tablist{ display:flex; gap:10px; padding:12px; border-bottom:1px solid var(--outline); flex-wrap:wrap }
+  .tabbtn{
+    border:1px solid var(--outline); background:transparent; color:var(--text);
+    padding:12px 14px; border-radius:12px; font-weight:800; cursor:pointer; font-size:15px;
+  }
+  .tabbtn[aria-selected="true"]{
+    background:var(--accent); border-color:color-mix(in oklab, var(--accent), black 12%); color:#06110a;
+  }
+  :root[data-theme="light"] .tabbtn[aria-selected="true"]{ color:#fff }
+  .tabpanel{ padding:18px; display:none }
+  .tabpanel.active{ display:block }
+
+  /* project headings bigger + adaptive grey */
+  .proj h2{ font-size:26px; margin:0 0 8px; color:var(--heading-grey); }
+  .proj h3{ font-size:22px; margin:18px 0 8px; color:var(--heading-grey); }
+  .proj ul{ margin:6px 0 0; padding-left:18px }
+  .proj li{ margin:6px 0 }
+
+  /* responsive */
+  @media (max-width: 980px){
+    .body-grid{ grid-template-columns:1fr }
+    .toc{ position:relative; top:auto }
+    .meta{ grid-template-columns:1fr }
+  }
+  @media (max-width: 900px){
+    .sidenav{ display:none }
+    .page{ padding-inline-start:0 }
+  }
+</style>
+</head>
+<body>
+  <!-- SIDE NAV -->
+  <aside class="sidenav" aria-label="Site navigation">
+    <nav class="rail">
+      <a class="pill" href="index.html#home" aria-label="Home"><i class="fa-solid fa-house"></i><span class="label">Home</span></a>
+      <a class="pill" href="index.html#about" aria-label="About"><i class="fa-regular fa-id-card"></i><span class="label">About</span></a>
+      <a class="pill" href="index.html#experience" aria-label="Experience"><i class="fa-solid fa-briefcase"></i><span class="label">Experience</span></a>
+      <a class="pill" href="index.html#projects" aria-label="Projects"><i class="fa-solid fa-diagram-project"></i><span class="label">Projects</span></a>
+      <a class="pill" href="https://www.linkedin.com/in/eshah17/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i><span class="label">Connect</span></a>
+      <button class="switch" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+        <i class="fa-solid fa-moon" id="themeIcon"></i><span class="label" id="themeLabel">Dark mode</span>
+      </button>
+    </nav>
+  </aside>
+
+  <main class="page">
+    <div class="wrap">
+      <!-- HERO -->
+      <div class="hero">
+        <div class="crumbs"><a href="index.html#experience">← Back to Experience</a></div>
+        <h1 class="title">Loblaw Digital — PC Optimum App</h1>
+        <div class="subtitle">Experimentation, Offer Design, Stakeholder Buy-in</div>
+        <div class="meta">
+          <div class="box"><div class="label">Role</div><div class="value">Data Analyst Intern</div></div>
+          <div class="box"><div class="label">Timeline</div><div class="value">Jan 2024 – Apr 2024</div></div>
+          <div class="box"><div class="label">Team</div><div class="value">Digital Member Growth</div></div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="body-grid">
+        <!-- MAIN -->
+        <div>
+          <!-- SUMMARY & SKILLS (one box, separate headings) -->
+          <section id="summary" class="section">
+            <h3>Summary</h3>
+            <p>
+              Conducted statistical analysis on customer behaviour to create new offers and increase weekly active users on the
+              PC Optimum app. Projects included EDA in BigQuery, experiment design, weekly stakeholder readouts, and the launch of a
+              new offer for more PC Optimum points.
+            </p>
+
+            <h3>Skills</h3>
+            <ul class="list">
+              <li>A/B testing & hypothesis-driven experiments</li>
+              <li>Exploratory data analysis in BigQuery and Excel</li>
+              <li>Offer design & specification docs</li>
+              <li>Cross-functional collaboration & senior leadership readouts</li>
+            </ul>
+          </section>
+
+          <!-- RESULTS -->
+          <section id="results" class="section results">
+            <h3>Results</h3>
+            <ul class="list">
+              <li><strong>Birthday Offer:</strong> launched; <strong>+4% in Weekly Active Users</strong> in the treatment group.</li>
+              <li><strong>Better Deals for New Members:</strong> rebalanced offer bundles to improve early offer redemption by +3%.</li>
+              <li><strong>Improving Onboarding Effectiveness:</strong> better understood the ~<strong>+11%</strong> increase new members remaining active for 4+ weeks to enhance marketing strategy.</li>
+              <li><strong>Loyalty Team Dashboard:</strong> shared KPI updates through a redesigned dashboard to the entire Loyalty department on weekly calls.</li>
+            </ul>
+          </section>
+
+          <!-- PROJECTS (tabs) -->
+          <section id="projects-tabs" class="section tabs" aria-label="Projects">
+            <div class="tablist" role="tablist" aria-label="Project tabs">
+              <button class="tabbtn" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">Birthday Offer</button>
+              <button class="tabbtn" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">New Member Offers</button>
+              <button class="tabbtn" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3">Engagement Cohorts</button>
+            </div>
+
+            <!-- Panel 1 -->
+            <div id="panel-1" class="tabpanel active proj" role="tabpanel" aria-labelledby="tab-1" tabindex="0">
+              <h2>A Special Birthday Offer for PC Optimum Members</h2>
+
+              <h3>Project Goal</h3>
+              <p>Increase weekly active users and repeat visits by celebrating members’ birthdays with targeted incentives such as bonus points.</p>
+
+              <h3>Approach</h3>
+              <ol>
+                <li>EDA in BigQuery to size eligible audience for birthday offers with different incentives and determine the control group.</li>
+                <li>Better understand the impact of the offer by calculating the lift and stickiness of the weekly active users through in-week and post 4 week analysis.</li>
+                <li>Developed a narrative to pitch the offer to cross-functional teams and obtain senior leadership approval.</li>
+              </ol>
+
+              <h3>Outcomes</h3>
+              <ul>
+                <li>Obtained the most optimal amount of points to offer to PC Optimum members.</li>
+                <li>Calculated a +4% increase in the number of weekly active users in comparsion to the control group!</li>
+              </ul>
+
+              <h3>Learnings</h3>
+              <ul>
+                <li>The importance of having a control group to understand the impact of your tests.</li>
+                <li>How to develop a story from your data to gain stakeholder buy-in.</li>
+              </ul>
+            </div>
+
+            <!-- Panel 2 -->
+            <div id="panel-2" class="tabpanel proj" role="tabpanel" aria-labelledby="tab-2" tabindex="0" hidden>
+              <h2>New Member Offer Sets</h2>
+
+              <h3>Project Goal</h3>
+              <p>Improve first-month redemption and points earned for new members.</p>
+
+              <h3>Approach</h3>
+              <ol>
+                <li>Utilized BigQuery to calculate the offer redemption % for every offer in the offer sets. </li>
+                <li>Understood the offer redemption % from user segmentation perspective (user activity and geographical).</li>
+                <li>Rebalanced the offer sets to ensure that new members have at least one low-friction offer (backed by redemption %) to every week for their first month.</li>
+                <li>Redesigned the onboarding customer survey with questions to personalize offers (ex. no meat offers for a vegeterian</li>
+              </ol>
+
+              <h3>Outcomes</h3>
+              <ul>
+                <li>~+3% redemption in month one; higher points velocity.</li>
+              </ul>
+
+              <h3>Learnings</h3>
+              <ul>
+                <li>Early success compounds—ensure at least one low-friction win.</li>
+              </ul>
+            </div>
+
+            <!-- Panel 3 -->
+            <div id="panel-3" class="tabpanel proj" role="tabpanel" aria-labelledby="tab-3" tabindex="0" hidden>
+              <h2>Engagement Cohort Analysis</h2>
+
+              <h3>Project Goal</h3>
+              <p>Identify where users drop and which mechanics correlate with retention.</p>
+
+              <h3>Approach</h3>
+              <ul>
+                <li>Cohorted by signup channel & first-week actions; profiled high-LTV patterns.</li>
+                <li>Surfaced mechanics for future tests (variety, novelty, progression).</li>
+              </ul>
+
+              <h3>Outcomes</h3>
+              <ul>
+                <li>Prioritized pipeline of experiments feeding Birthday & Onboarding work.</li>
+              </ul>
+
+              <h3>Learnings</h3>
+              <ul>
+                <li>Offer novelty decays—rotate mechanics to avoid diminishing returns.</li>
+              </ul>
+            </div>
+          </section>
+
+          <div style="display:flex;justify-content:space-between;gap:12px;margin-top:26px">
+            <a class="tabbtn" href="index.html#experience"><i class="fa-solid fa-arrow-left"></i>&nbsp;Back to Experience</a>
+            <a class="tabbtn" href="capital-one-2024.html">Next case study&nbsp;<i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- SLIM TOC -->
+        <aside class="toc" aria-label="On this page">
+          <h5>On this page</h5>
+          <a href="#summary">Summary & Skills</a>
+          <a href="#results">Results</a>
+          <a href="#projects-tabs">Projects</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // theme toggle (persist)
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+    const saved = localStorage.getItem('theme');
+    if(saved){ if(saved==='light') root.setAttribute('data-theme','light'); updateSwitch(); }
+    btn.addEventListener('click', () => {
+      const isLight = root.getAttribute('data-theme') === 'light';
+      if(isLight){ root.removeAttribute('data-theme'); localStorage.setItem('theme',''); }
+      else{ root.setAttribute('data-theme','light'); localStorage.setItem('theme','light'); }
+      updateSwitch();
+    });
+    function updateSwitch(){
+      const isLight = root.getAttribute('data-theme') === 'light';
+      btn.setAttribute('aria-pressed', String(isLight));
+      btn.setAttribute('aria-label', isLight ? 'Toggle dark mode' : 'Toggle light mode');
+      icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      label.textContent = isLight ? 'Light mode' : 'Dark mode';
+    }
+
+    // accessible tabs
+    const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+    function activateTab(tab){
+      tabs.forEach(t=>{
+        const sel = t===tab;
+        t.setAttribute('aria-selected', sel);
+        const panel = document.getElementById(t.getAttribute('aria-controls'));
+        if(sel){ panel.classList.add('active'); panel.removeAttribute('hidden'); }
+        else{ panel.classList.remove('active'); panel.setAttribute('hidden',''); }
+      });
+      tab.focus();
+    }
+    tabs.forEach(t=>{
+      t.addEventListener('click', ()=>activateTab(t));
+      t.addEventListener('keydown', (e)=>{
+        const i = tabs.indexOf(t);
+        if(e.key==='ArrowRight'){ e.preventDefault(); activateTab(tabs[(i+1)%tabs.length]); }
+        if(e.key==='ArrowLeft'){ e.preventDefault(); activateTab(tabs[(i-1+tabs.length)%tabs.length]); }
+        if(e.key==='Home'){ e.preventDefault(); activateTab(tabs[0]); }
+        if(e.key==='End'){ e.preventDefault(); activateTab(tabs[tabs.length-1]); }
+      });
+    });
+  </script>
+</body>
+</html>
