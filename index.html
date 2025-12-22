@@ -114,7 +114,7 @@
   .page{ padding-inline-start:calc(var(--sidenav-w) + var(--side-gutter)); }
   section{
     padding:64px clamp(20px,4vw,28px);
-    min-height:100vh; scroll-snap-align:start;
+    min-height:auto; scroll-snap-align:start;
     display:flex; align-items:flex-start;
   }
   #about{ padding-top:40px; }
@@ -297,7 +297,7 @@
       </a>
       <button class="switch" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
         <i class="fa-solid fa-moon" id="themeIcon" aria-hidden="true"></i>
-        <span class="label" id="themeLabel">Dark mode</span>
+        <span class="label" id="themeLabel">Dark Mode</span>
       </button>
     </nav>
   </aside>
@@ -362,6 +362,21 @@
       <div class="container section-card">
         <h2>Experience</h2>
         <div class="list">
+
+          <a class="entry-link">
+            <article class="entry">
+              <div class="entry-head">
+                <h3 class="company-name">Capital One</h3>
+                <div class="date">Sept 2024 – Present</div>
+              </div>
+              <h4 class="job-title">Associate, Process Manager</h4>
+              <p class="job-description">
+                Owned data-driven rewards decisions from experiment validation to full-scale rollout while ensuring regulatory compliance and operational efficiency for the $xxM program.
+              </p>
+              <div class="tags"><span class="tag">A/B Testing</span><span class="tag">Snowflake</span><span class="tag">Risk Management</span></div>
+              <!--  <span class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></span> -->
+            </article>
+          </a>
 
           <a class="entry-link" href = "capital-one.html">
             <article class="entry">
@@ -447,6 +462,23 @@
       <div class="container section-card">
         <h2>Projects</h2>
         <div class="list">
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3 class="company-name">WR-Only Separation (WOS) - 2026 NFL Big Data Bowl Analytics</h3>
+              <div class="date">Oct 2025 - Dec 2025</div>
+            </div>
+            <h4 class="job-title">Data Science in Sports</h4>
+            <p class="job-description">
+              Developed a new metric and model to isolate receiver-created separation from contextual advantage using NFL Big Data Bowl tracking data.
+            </p>
+            <div class="links">
+              <a class="link-chip" href="https://eshashah.substack.com/p/who-was-the-best-wide-receiver-in" target="_blank" rel="noopener"><i class="fa-solid fa-comment"></i> Blog Post</a>
+              <a class="link-chip" href="https://www.kaggle.com/competitions/nfl-big-data-bowl-2026-analytics/writeups/new-writeup-1764551836397" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i>Kaggle Write-Up</a>
+              <a class="link-chip" href="https://youtu.be/GBF8crDCH20" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Demo Video </a>
+            </div>
+            <div class="tags"><span class="tag">XGBoost</span><span class="tag">Marimo</span><span class="tag">Tracking Data</span></div>
+          </article>
 
           <article class="entry">
             <div class="entry-head">
